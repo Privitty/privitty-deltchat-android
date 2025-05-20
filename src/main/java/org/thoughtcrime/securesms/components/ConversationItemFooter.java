@@ -78,7 +78,13 @@ public class ConversationItemFooter extends LinearLayout {
         securePrvIndicatorView.setVisibility(VISIBLE);
         imageview_file_state_indicator.setVisibility(VISIBLE);
 
-        int fileState = privJNI.getFileAccessState(messageRecord.getChatId(), messageRecord.getFilename(), (messageRecord.getFromId() != DcContact.DC_CONTACT_ID_SELF));
+        int fileState = 0;
+        if (messageRecord.isForwarded()) {
+          fileState = privJNI.getFileForwardAccessState(messageRecord.getChatId(), messageRecord.getFile(), (messageRecord.getFromId() == DcContact.DC_CONTACT_ID_SELF));
+        } else {
+          fileState = privJNI.getFileAccessState(messageRecord.getChatId(), messageRecord.getFilename(), (messageRecord.getFromId() != DcContact.DC_CONTACT_ID_SELF));
+        }
+
         if (fileState == PrivJNI.PRV_SPLITKEYS_STATE_TYPE_SPLITKEYS_ACTIVE) {
           // access allowed
           int resId = ThemeUtil.getThemeAttributeResourceId(getContext(), R.attr.file_allowed_icon);

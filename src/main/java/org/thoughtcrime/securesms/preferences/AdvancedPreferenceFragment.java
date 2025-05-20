@@ -34,6 +34,7 @@ import androidx.preference.Preference;
 
 import com.b44t.messenger.DcContext;
 import com.b44t.messenger.rpc.RpcException;
+import com.b44t.messenger.PrivJNI;
 
 import org.thoughtcrime.securesms.ApplicationPreferencesActivity;
 import org.thoughtcrime.securesms.ConversationActivity;
@@ -63,6 +64,7 @@ public class AdvancedPreferenceFragment extends ListSummaryPreferenceFragment
 {
   private static final String TAG = AdvancedPreferenceFragment.class.getSimpleName();
   public static final int PICK_SELF_KEYS = 29923;
+  private PrivJNI    privJni;
 
   private ListPreference showEmails;
   CheckBoxPreference preferE2eeCheckbox;
@@ -76,6 +78,7 @@ public class AdvancedPreferenceFragment extends ListSummaryPreferenceFragment
   @Override
   public void onCreate(Bundle paramBundle) {
     super.onCreate(paramBundle);
+    this.privJni = new PrivJNI(getContext());
 
     showEmails = (ListPreference) this.findPreference("pref_show_emails");
     showEmails.setOnPreferenceChangeListener((preference, newValue) -> {
@@ -97,10 +100,17 @@ public class AdvancedPreferenceFragment extends ListSummaryPreferenceFragment
       return true;
     });
 
-    EditTextPreference usernamePref = findPreference("pref_allowed_file_access_time");
-    if (usernamePref != null)
-    {
-      usernamePref.setSummaryProvider(EditTextPreference.SimpleSummaryProvider.getInstance());
+    EditTextPreference accessTimePref = findPreference("pref_allowed_file_access_time");
+    if (accessTimePref != null) {
+      accessTimePref.setSummaryProvider(EditTextPreference.SimpleSummaryProvider.getInstance());
+      accessTimePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        @Override
+        public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
+          privJni.setConfiguration(privJni.PRV_DB_CONFIG_GENERAL_ACCESS_TIME, newValue.toString());
+          Log.d("JAVA-Privitty", "Setting access time to: " + newValue);
+          return true;
+        }
+      });
     }
 
     bccSelfCheckbox = (CheckBoxPreference) this.findPreference("pref_bcc_self");

@@ -3,6 +3,7 @@ package org.thoughtcrime.securesms.connect;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -314,9 +315,17 @@ public class DcHelper {
     PrivJNI privJni = getPriv(activity);
     String prvFile;
     if (msg.getFromId() == DcContact.DC_CONTACT_ID_SELF) {
-      prvFile = privJni.decryptFile(msg.getChatId(), srcP.getParent(), srcP.getName(), true);
+      if (msg.isForwarded()) {
+        prvFile = privJni.decryptForwardedFile(msg.getChatId(), srcP.getParent(), srcP.getName(), true);
+      } else {
+        prvFile = privJni.decryptFile(msg.getChatId(), srcP.getParent(), srcP.getName(), true);
+      }
     } else {
-      prvFile = privJni.decryptFile(msg.getChatId(), srcP.getParent(), srcP.getName(), false);
+      if (msg.isForwarded()) {
+        prvFile = privJni.decryptForwardedFile(msg.getChatId(), srcP.getParent(), srcP.getName(), false);
+      } else {
+        prvFile = privJni.decryptFile(msg.getChatId(), srcP.getParent(), srcP.getName(), false);
+      }
     }
     Log.d("JAVA-Privitty", "File Name: " + prvFile);
 
@@ -328,6 +337,27 @@ public class DcHelper {
     } else if (prvFile.equals("SPLITKEYS_DELETED")) {
       Toast.makeText(activity, "Peer deleted the file !", Toast.LENGTH_LONG).show();
       return;
+    } else if (false /* prvFile.equals("relay_message") */) {
+
+      new AlertDialog.Builder(activity)
+        .setTitle("Confirm")
+        .setMessage("Are you sure you want to proceed?")
+        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int which) {
+            // Yes button clicked
+            Toast.makeText(activity, "You chose Yes", Toast.LENGTH_SHORT).show();
+          }
+        })
+        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int which) {
+            // No button clicked
+            Toast.makeText(activity, "You chose No", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+          }
+        })
+        .setCancelable(false)
+        .show();
+
     } else if (prvFile.equals("SPLITKEYS_REVOKED")) {
       Toast.makeText(activity, "Access revoked !", Toast.LENGTH_LONG).show();
       return;

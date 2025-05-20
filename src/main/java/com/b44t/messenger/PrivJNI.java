@@ -60,11 +60,12 @@ public class PrivJNI {
     public final static int PRV_APP_STATUS_REVERT_FORWARD_SPLITKEYS_REQUEST     = 30;
     public final static int PRV_APP_STATUS_RELAY_BACKWARD_SPLITKEYS_RESPONSE    = 31;
     public final static int PRV_APP_STATUS_PEER_SPLITKEYS_DELETED               = 32;
+    public final static int PRV_APP_STATUS_PEER_SPLITKEYS_UNDO_REVOKED          = 33;
 
     /*
      * NOTE: Add any event above PRV_APP_STATUS_LIB_LAST and update PRV_APP_STATUS_LIB_LAST
      */ 
-    public final static int PRV_APP_STATUS_LIB_LAST                             = 33;
+    public final static int PRV_APP_STATUS_LIB_LAST                             = 34;
 
 
     /*
@@ -77,6 +78,10 @@ public class PrivJNI {
     public final static int PRV_SPLITKEYS_STATE_TYPE_SPLITKEYS_BLOCKED          = 4;
     public final static int PRV_SPLITKEYS_STATE_TYPE_SPLITKEYS_DELETED          = 5;
 
+    /*
+     * Static Privitty strings
+     */
+    public final static String PRV_DB_CONFIG_GENERAL_ACCESS_TIME                = "general_access_time";
 
     private Context context = null;
     public PrivJNI(Context context) {
@@ -84,6 +89,7 @@ public class PrivJNI {
     }
 
     public native String version();
+    public native boolean setConfiguration(String key, String value);
     public native void startEventLoop(String path);
     public native void stopConsumer();
     public native void produceEvent(PrivEvent event);
@@ -101,6 +107,7 @@ public class PrivJNI {
     public native boolean revokeMsgs(int chatId, String filenames);
     public native boolean isChatVersion(String mime_header);
     public native int getFileAccessState(int chat_id, String file_name, boolean direction);
+    public native int getFileForwardAccessState(int chat_id, String file_path, boolean direction);
     public native boolean canDownloadFile(int chat_id, String file_name, boolean direction);
     public native boolean canForwardFile(int chat_id, String file_name, boolean direction);     // Direction: Incoming or Outgoing message
     /*
@@ -111,9 +118,9 @@ public class PrivJNI {
     /*
      * Add peer request to whom this file is being forwarded.
      */
-    public native boolean forwardPeerAdd(int source_chat_id, int recipient_chat_id, String recipient_name,
-                                         String file_path, String file_name, boolean direction);
-  public native String decryptForwardedFile(int chat_id, String filePath, String fileName, boolean outgoing);
+    public native Result forwardPeerAdd(int source_chat_id, int recipient_chat_id, String recipient_name,
+                                        String file_path, String file_name, boolean direction);
+    public native String decryptForwardedFile(int chat_id, String filePath, String fileName, boolean outgoing);
     /*
      * Set the file attributes for a `forwarded` file by the file owner in the UI
      */
@@ -121,6 +128,16 @@ public class PrivJNI {
                                                 boolean direction, boolean download_file, boolean forward_file,
                                                 int access_time);
     public native byte[] createChatGroup(int chatId, String ChatGroupName);
+
+    public static class Result {
+      public boolean success;
+      public String filepath;
+
+      public Result(boolean success, String filepath) {
+        this.success = success;
+        this.filepath = filepath;
+      }
+  }
 }
 
 

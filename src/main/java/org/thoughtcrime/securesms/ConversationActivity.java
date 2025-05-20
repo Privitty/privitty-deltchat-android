@@ -739,8 +739,16 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
                     // Privitty forward file
                     destChatId = chatId;
                     String path = messageRecord.getFile();
+                    String mime = messageRecord.getFilemime();
                     File srcPath = new File(path);
-                    privJni.forwardPeerAdd((int)srcChatId, (int)destChatId, dcChat.getName(), srcPath.getParent(), srcPath.getName(), true);
+                    PrivJNI.Result r = privJni.forwardPeerAdd((int)srcChatId, (int)destChatId, dcChat.getName(), srcPath.getParent(), srcPath.getName(), true);
+
+                    if (r.success) {
+                      Log.i("JAVA-Privitty", "Successfully forwarded file");
+                      messageRecord.setFile(r.filepath, mime);
+                    } else {
+                      Log.e("JAVA-Privitty", "Failed to forward file");
+                    }
                   }
                 }
 

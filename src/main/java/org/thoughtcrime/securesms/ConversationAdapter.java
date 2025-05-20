@@ -319,7 +319,8 @@ public class ConversationAdapter <V extends View & BindableConversationItem>
           dcMsg.setText("You granted 15 mins viewing access.");
           dcMsg.setSubject("PRIVITTY_TOAST_MSG");
           return MESSAGE_TYPE_OUTGOING;
-        } else if ("SPLITKEYS_REQUEST".equalsIgnoreCase(jSubject.getString("type"))) {
+        } else if (("SPLITKEYS_REQUEST".equalsIgnoreCase(jSubject.getString("type"))) ||
+                   ("SPLITKEYS_REQUESTING".equalsIgnoreCase(jSubject.getString("type")))) {
           dcMsg.setText("Requesting access from the owner ...");
           dcMsg.setSubject("PRIVITTY_TOAST_MSG");
           return MESSAGE_TYPE_OUTGOING;
@@ -333,6 +334,14 @@ public class ConversationAdapter <V extends View & BindableConversationItem>
           return MESSAGE_TYPE_OUTGOING;
         } else if ("SPLITKEYS_DELETED".equalsIgnoreCase(jSubject.getString("type"))) {
           dcMsg.setText("Requesting for a deleted message");
+          dcMsg.setSubject("PRIVITTY_TOAST_MSG");
+          return MESSAGE_TYPE_OUTGOING;
+        } else if ("SPLITKEYS_UNDO_REVOKED".equalsIgnoreCase(jSubject.getString("type"))) {
+          dcMsg.setText("You Undo revoke");
+          dcMsg.setSubject("PRIVITTY_TOAST_MSG");
+          return MESSAGE_TYPE_OUTGOING;
+        } else if ("relay_message".equalsIgnoreCase(jSubject.getString("type"))) {
+          dcMsg.setText("relay_message");
           dcMsg.setSubject("PRIVITTY_TOAST_MSG");
           return MESSAGE_TYPE_OUTGOING;
         }
