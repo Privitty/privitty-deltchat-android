@@ -9,11 +9,11 @@
     tools:parentTag="org.thoughtcrime.securesms.components.ConversationItemFooter">
 
     <ImageView
+
         android:id="@+id/imageview_file_state_indicator"
         android:layout_gravity="center_vertical|end"
         android:background="@android:color/transparent"
-        android:src="@drawable/file_disallowed_light"
-        android:visibility="gone"
+        android:src="@drawable/ic_file_disallowed_dark"
         android:layout_width="12dp"
         android:layout_height="12dp"/>
     <ImageView

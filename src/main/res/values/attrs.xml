@@ -68,6 +68,7 @@
     <attr name="file_disallowed_icon" format="reference" />
     <attr name="file_allowed_icon" format="reference" />
     <attr name="file_access_request_icon" format="reference" />
+    <attr name="file_forward_icon" format="reference" />
     <attr name="dialog_background_color" format="reference|color" />
     <attr name="intro1" format="reference|color" />
     <attr name="intro2" format="reference|color" />

@@ -118,12 +118,13 @@
 
         <item name="dialog_info_icon">@drawable/ic_info_outline_light</item>
         <item name="dialog_alert_icon">@drawable/ic_warning_light</item>
-        <item name="file_inprogress_icon">@drawable/file_inprogress_light</item>
+        <item name="file_inprogress_icon">@drawable/ic_file_inprogress_light</item>
+        <item name="file_forward_icon">@drawable/ic_file_forward_light</item>
         <item name="intro1">@drawable/intro1_light</item>
         <item name="intro2">@drawable/intro2_light</item>
         <item name="privitty_lock">@drawable/privitty_lock_light</item>
-        <item name="file_disallowed_icon">@drawable/file_disallowed_light</item>
-        <item name="file_allowed_icon">@drawable/file_allowed_light</item>
+        <item name="file_disallowed_icon">@drawable/ic_file_disallowed_light</item>
+        <item name="file_allowed_icon">@drawable/ic_file_allowed_light</item>
         <item name="file_access_request_icon">@drawable/file_access_request_light</item>
         <item name="dialog_background_color">@color/background_material_light</item>
 
@@ -210,12 +211,13 @@
 
         <item name="dialog_info_icon">@drawable/ic_info_outline_dark</item>
         <item name="dialog_alert_icon">@drawable/ic_warning_dark</item>
-        <item name="file_inprogress_icon">@drawable/file_inprogress_dark</item>
+        <item name="file_inprogress_icon">@drawable/ic_file_inprogress_dark</item>
+        <item name="file_forward_icon">@drawable/ic_file_forward_dark</item>
         <item name="intro1">@drawable/intro1_dark</item>
         <item name="intro2">@drawable/intro2_dark</item>
         <item name="privitty_lock">@drawable/privitty_lock_dark</item>
-        <item name="file_disallowed_icon">@drawable/file_disallowed_dark</item>
-        <item name="file_allowed_icon">@drawable/file_allowed_dark</item>
+        <item name="file_disallowed_icon">@drawable/ic_file_disallowed_dark</item>
+        <item name="file_allowed_icon">@drawable/ic_file_allowed_dark</item>
         <item name="file_access_request_icon">@drawable/file_access_request_dark</item>
         <item name="dialog_background_color">@color/background_material_dark</item>
 

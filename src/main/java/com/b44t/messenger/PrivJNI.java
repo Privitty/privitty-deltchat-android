@@ -71,12 +71,14 @@ public class PrivJNI {
     /*
      * NOTE: Splitkeys status types
      */
-    public final static int PRV_SPLITKEYS_STATE_TYPE_NONE                       = 0;
-    public final static int PRV_SPLITKEYS_STATE_TYPE_SPLITKEYS_ACTIVE           = 1;
-    public final static int PRV_SPLITKEYS_STATE_TYPE_SPLITKEYS_REQUEST          = 2;
-    public final static int PRV_SPLITKEYS_STATE_TYPE_SPLITKEYS_REVOKED          = 3;
-    public final static int PRV_SPLITKEYS_STATE_TYPE_SPLITKEYS_BLOCKED          = 4;
-    public final static int PRV_SPLITKEYS_STATE_TYPE_SPLITKEYS_DELETED          = 5;
+    public final static int PRV_SPLITKEYS_STATE_TYPE_NONE                             = 0;
+    public final static int PRV_SPLITKEYS_STATE_TYPE_SPLITKEYS_ACTIVE                 = 1;
+    public final static int PRV_SPLITKEYS_STATE_TYPE_SPLITKEYS_REQUEST                = 2;
+    public final static int PRV_SPLITKEYS_STATE_TYPE_SPLITKEYS_REVOKED                = 3;
+    public final static int PRV_SPLITKEYS_STATE_TYPE_SPLITKEYS_BLOCKED                = 4;
+    public final static int PRV_SPLITKEYS_STATE_TYPE_SPLITKEYS_DELETED                = 5;
+    public final static int PRV_SPLITKEYS_STATE_TYPE_RELAY_SPLITKEY_TO_OWNER          = 6;
+    public final static int PRV_SPLITKEYS_STATE_TYPE_RELAY_SPLITKEY_TO_RECIPIENT      = 7;
 
     /*
      * Static Privitty strings

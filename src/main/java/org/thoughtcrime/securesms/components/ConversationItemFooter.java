@@ -97,6 +97,10 @@ public class ConversationItemFooter extends LinearLayout {
           // access blocked or expired or Revoked
           int resId = ThemeUtil.getThemeAttributeResourceId(getContext(), R.attr.file_disallowed_icon);
           imageview_file_state_indicator.setImageResource(resId);
+        } else if ((fileState == PrivJNI.PRV_SPLITKEYS_STATE_TYPE_RELAY_SPLITKEY_TO_OWNER) || (fileState == PrivJNI.PRV_SPLITKEYS_STATE_TYPE_RELAY_SPLITKEY_TO_RECIPIENT)) {
+          // Relayed message
+          int resId = ThemeUtil.getThemeAttributeResourceId(getContext(), R.attr.file_forward_icon);
+          imageview_file_state_indicator.setImageResource(resId);
         }
       }
       else
