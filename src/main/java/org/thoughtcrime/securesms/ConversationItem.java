@@ -29,6 +29,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.b44t.messenger.DcChat;
 import com.b44t.messenger.DcContact;
 import com.b44t.messenger.DcMsg;
+import com.b44t.messenger.PrivJNI;
 import com.b44t.messenger.rpc.Reactions;
 import com.b44t.messenger.rpc.RpcException;
 import com.b44t.messenger.rpc.VcardContact;
@@ -93,6 +95,7 @@ public class ConversationItem extends BaseConversationItem
   private static final int MAX_MEASURE_CALLS = 3;
 
   private DcContact     dcContact;
+  private PrivJNI privJNI = null;
   // Whether the sender's avatar and name should be shown (usually the case in group threads):
   private boolean       showSender;
   private GlideRequests glideRequests;
@@ -109,6 +112,7 @@ public class ConversationItem extends BaseConversationItem
   private   ViewGroup              container;
   private   Button                 msgActionButton;
   private   Button                 showFullButton;
+  private   ImageView              message_notification;
 
   private @NonNull  Stub<ConversationItemThumbnail> mediaThumbnailStub;
   private @NonNull  Stub<AudioView>                 audioViewStub;
@@ -123,12 +127,15 @@ public class ConversationItem extends BaseConversationItem
   private int incomingBubbleColor;
   private int outgoingBubbleColor;
 
-  public ConversationItem(Context context) {
+  public ConversationItem(Context context)
+  {
     this(context, null);
+    privJNI = new PrivJNI(context);
   }
 
   public ConversationItem(Context context, AttributeSet attrs) {
     super(context, attrs);
+    privJNI = new PrivJNI(context);
   }
 
   @Override
@@ -140,6 +147,7 @@ public class ConversationItem extends BaseConversationItem
     this.bodyText                =            findViewById(R.id.conversation_item_body);
     this.footer                  =            findViewById(R.id.conversation_item_footer);
     this.reactionsView           =            findViewById(R.id.reactions_view);
+    this.message_notification    =            findViewById(R.id.message_notification);
     this.groupSender             =            findViewById(R.id.group_message_sender);
     this.contactPhoto            =            findViewById(R.id.contact_photo);
     this.contactPhotoHolder      =            findViewById(R.id.contact_photo_container);
@@ -200,6 +208,7 @@ public class ConversationItem extends BaseConversationItem
     setAuthor(messageRecord, showSender);
     setMessageSpacing(context);
     setReactions(messageRecord);
+    setMessageNotification(messageRecord);
     setFooter(messageRecord);
     setQuote(messageRecord);
     if (Util.isTouchExplorationEnabled(context)) {
@@ -752,6 +761,23 @@ public class ConversationItem extends BaseConversationItem
     ConversationItemFooter activeFooter = getActiveFooter(current);
     activeFooter.setVisibility(VISIBLE);
     activeFooter.setMessageRecord(current);
+  }
+
+  private void setMessageNotification(@NonNull DcMsg current)
+  {
+    message_notification.setVisibility(GONE);
+    ///remaining code milind
+
+
+    message_notification.setOnClickListener(new OnClickListener()
+    {
+      @Override
+      public void onClick(View v)
+      {
+            Toast.makeText(context,"Hieee",Toast.LENGTH_LONG).show();
+      }
+    });
+
   }
 
   private void setReactions(@NonNull DcMsg current) {

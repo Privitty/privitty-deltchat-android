@@ -227,16 +227,28 @@
                 app:footer_text_color="?conversation_item_incoming_text_secondary_color"/>
 
         </LinearLayout>
-
-        <org.thoughtcrime.securesms.reactions.ReactionsConversationView
-            android:id="@+id/reactions_view"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_below="@id/body_bubble"
             android:layout_alignStart="@id/body_bubble"
-            android:layout_marginTop="-4dp"
-            android:orientation="horizontal"
-            app:message_type="incoming" />
+            android:layout_marginTop="-4dp">
+            <org.thoughtcrime.securesms.reactions.ReactionsConversationView
+                android:id="@+id/reactions_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:message_type="incoming" />
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/message_notification"
+                android:src="@drawable/ic_notification_bell"
+                android:scaleType="fitStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
 
     </RelativeLayout>
 </org.thoughtcrime.securesms.ConversationItem>
