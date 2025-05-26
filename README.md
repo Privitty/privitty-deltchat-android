@@ -232,6 +232,8 @@ You have 2 ways to do this:
 
 2. Or set them via environment variables.
 
+This project is tested with BrowserStack.
+
 # Translations
 
 Android metadata and changelogs are translated using [Weblate](https://hosted.weblate.org/projects/deltachat/android-metadata/).
