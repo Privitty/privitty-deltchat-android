@@ -642,7 +642,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     AlertDialog dialog = new AlertDialog.Builder(this)
         .setMessage(getResources().getString(R.string.ask_delete_named_chat, dcChat.getName()))
         .setPositiveButton(R.string.delete, (d, which) -> {
-          privJni.cleanChat((int) chatId);
+          privJni.deleteChat((int) chatId);
 
           int[] msgs = dcContext.getChatMsgs((int) chatId, 0, 0);
           for(int i=0 ; i<msgs.length ; i++) {
@@ -679,7 +679,7 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
       openFileAttributeAlert();
     } else {
       Log.d("JAVA-Privitty", "isContactRequest: " + dcContext.getChat(chatId).isContactRequest());
-      PrivEvent jevent = new PrivEvent(PrivJNI.PRV_EVENT_ADD_NEW_PEER, "", dcChat.getName(), dcChat.getId(), 0, chatId,
+      PrivEvent jevent = new PrivEvent(PrivJNI.PRV_EVENT_ADD_NEW_PEER, "", dcChat.getName(), 0, 0, chatId,
                                        "", "", "", 0, new byte[0]);
       privJni.produceEvent(jevent);
       Log.d("JAVA-Privitty", "Adding a new peer");

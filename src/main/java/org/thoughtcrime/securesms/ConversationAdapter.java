@@ -306,7 +306,7 @@ public class ConversationAdapter <V extends View & BindableConversationItem>
           dcMsg.setText("This group is Privitty secure—take control and revoke data anytime.");
           dcMsg.setSubject("");
           return MESSAGE_TYPE_INFO;
-        } else if ("new_peer_complete".equalsIgnoreCase(jSubject.getString("type")) || "new_peer_conclude".equalsIgnoreCase(jSubject.getString("type"))) {
+        } else if ("new_peer_complete".equalsIgnoreCase(jSubject.getString("type")) || "new_peer_concluded".equalsIgnoreCase(jSubject.getString("type"))) {
           // Required
           dcMsg.setText("You are Privitty secure—take control and revoke data anytime.");
           dcMsg.setSubject("");
@@ -340,7 +340,8 @@ public class ConversationAdapter <V extends View & BindableConversationItem>
           dcMsg.setText("You Undo revoke");
           dcMsg.setSubject("PRIVITTY_TOAST_MSG");
           return MESSAGE_TYPE_OUTGOING;
-        } else if ("relay_message".equalsIgnoreCase(jSubject.getString("type"))) {
+        } else if ("relay_message".equalsIgnoreCase(jSubject.getString("type")) || "relay_request".equalsIgnoreCase(jSubject.getString("type")) ||
+                   "relay_response".equalsIgnoreCase(jSubject.getString("type"))) {
           dcMsg.setText("relay_message");
           dcMsg.setSubject("PRIVITTY_TOAST_MSG");
           return MESSAGE_TYPE_OUTGOING;

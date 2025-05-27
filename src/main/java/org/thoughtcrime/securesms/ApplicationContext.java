@@ -347,7 +347,7 @@ public class ApplicationContext extends MultiDexApplication {
       Log.d("JAVA-Privitty", "Congratulations! New peer concluded.");
       Util.runOnAnyBackgroundThread(() -> {
         DcMsg msg = new DcMsg(dcContext, DcMsg.DC_MSG_TEXT);
-        msg.setSubject("{'privitty':'true', 'type':'new_peer_conclude'}");
+        msg.setSubject("{'privitty':'true', 'type':'new_peer_concluded'}");
         String base64Msg = Base64.getEncoder().encodeToString(pdu);
         msg.setText(base64Msg);
         int msgId = dcContext.sendMsg(chatId, msg);
@@ -440,7 +440,7 @@ public class ApplicationContext extends MultiDexApplication {
       });
     } else if (statusCode == PrivJNI.PRV_APP_STATUS_FORWARD_SPLITKEYS_REQUEST ||
                statusCode == PrivJNI.PRV_APP_STATUS_REVERT_FORWARD_SPLITKEYS_REQUEST) {
-      Log.d("JAVA-Privitty", "Relay message: " + statusCode + " ChatId: " + chatId + " ForwardToChatId: " + forwardToChatId );
+      Log.d("JAVA-Privitty", "Forward/Revert Request: " + statusCode + " ChatId: " + chatId + " ForwardToChatId: " + forwardToChatId );
       Util.runOnAnyBackgroundThread(() -> {
         DcMsg msg = new DcMsg(dcContext, DcMsg.DC_MSG_TEXT);
         msg.setSubject("{'privitty':'true', 'type':'relay_message'}");
@@ -448,12 +448,20 @@ public class ApplicationContext extends MultiDexApplication {
         msg.setText(base64Msg);
         int msgId = dcContext.sendMsg(chatId, msg);
       });
-    } else if (statusCode == PrivJNI.PRV_APP_STATUS_RELAY_FORWARD_SPLITKEYS_REQUEST ||
-               statusCode == PrivJNI.PRV_APP_STATUS_RELAY_BACKWARD_SPLITKEYS_RESPONSE) {
-      Log.d("JAVA-Privitty", "Relay message: " + statusCode + " ChatId: " + chatId + " ForwardToChatId: " + forwardToChatId );
+    } else if (statusCode == PrivJNI.PRV_APP_STATUS_RELAY_FORWARD_SPLITKEYS_REQUEST) {
+      Log.d("JAVA-Privitty", "Relay request: " + statusCode + " ChatId: " + chatId + " ForwardToChatId: " + forwardToChatId );
       Util.runOnAnyBackgroundThread(() -> {
         DcMsg msg = new DcMsg(dcContext, DcMsg.DC_MSG_TEXT);
-        msg.setSubject("{'privitty':'true', 'type':'relay_message'}");
+        msg.setSubject("{'privitty':'true', 'type':'relay_request'}");
+        String base64Msg = Base64.getEncoder().encodeToString(pdu);
+        msg.setText(base64Msg);
+        int msgId = dcContext.sendMsg(forwardToChatId, msg);
+      });
+    } else if (statusCode == PrivJNI.PRV_APP_STATUS_RELAY_BACKWARD_SPLITKEYS_RESPONSE) {
+      Log.d("JAVA-Privitty", "Relay response: " + statusCode + " ChatId: " + chatId + " ForwardToChatId: " + forwardToChatId );
+      Util.runOnAnyBackgroundThread(() -> {
+        DcMsg msg = new DcMsg(dcContext, DcMsg.DC_MSG_TEXT);
+        msg.setSubject("{'privitty':'true', 'type':'relay_response'}");
         String base64Msg = Base64.getEncoder().encodeToString(pdu);
         msg.setText(base64Msg);
         int msgId = dcContext.sendMsg(forwardToChatId, msg);

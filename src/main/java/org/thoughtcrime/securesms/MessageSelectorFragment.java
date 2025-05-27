@@ -78,9 +78,9 @@ public abstract class MessageSelectorFragment
                 PrivJNI privJni = new PrivJNI(getContext());
                 for (int i = 0; i < messageIds.length; i++) {
                   DcMsg dcMsg = DcHelper.getContext(getActivity()).getMsg(messageIds[i]); 
-                  filenames[i] = dcMsg.getFile();  
+                  filenames[i] = dcMsg.getFile();
                 }
-                privJni.cleanMsgs(chatId, filenames);
+                privJni.deleteMsgs(chatId, filenames);
 
                 dcContext.deleteMsgs(messageIds);
                 if (actionMode != null) actionMode.finish();

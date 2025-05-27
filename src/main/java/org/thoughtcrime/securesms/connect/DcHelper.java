@@ -334,10 +334,13 @@ public class DcHelper {
     if (prvFile.equals("SPLITKEYS_EXPIRED") || prvFile.equals("SPLITKEYS_REQUESTED")) {
       Toast.makeText(activity, "Access expired, requesting again", Toast.LENGTH_LONG).show();
       return;
+    } else if (prvFile.equals("SPLITKEYS_REQUESTING")) {
+      Toast.makeText(activity, "Requesting access from Owner", Toast.LENGTH_LONG).show();
+      return;
     } else if (prvFile.equals("SPLITKEYS_DELETED")) {
       Toast.makeText(activity, "Peer deleted the file !", Toast.LENGTH_LONG).show();
       return;
-    } else if (false /* prvFile.equals("relay_message") */) {
+    } else if (false /* prvFile.equals("relay_request")*/ ) {
 
       new AlertDialog.Builder(activity)
         .setTitle("Confirm")

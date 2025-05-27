@@ -104,8 +104,8 @@ public class PrivJNI {
                                   int can_download, int can_forward, int num_peer_sss_request,
                                   String forwarded_to, int sent_privitty_protected);
     public native boolean isChatPrivittyProtected(int chatId);
-    public native boolean cleanChat(int chatId);
-    public native boolean cleanMsgs(int chatId, String[] filenames);
+    public native boolean deleteChat(int chatId);
+    public native boolean deleteMsgs(int chatId, String[] filenames);
     public native boolean revokeMsgs(int chatId, String filenames);
     public native boolean isChatVersion(String mime_header);
     public native int getFileAccessState(int chat_id, String file_name, boolean direction);
