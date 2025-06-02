@@ -328,6 +328,9 @@ public class DcHelper {
     } else if (prvFile.equals("SPLITKEYS_REVOKED")) {
       Toast.makeText(activity, "Access revoked !", Toast.LENGTH_LONG).show();
       return;
+    } else if (prvFile.equals("SPLITKEYS_DENIED")) {
+       Toast.makeText(activity, "Owner denied access!", Toast.LENGTH_LONG).show();
+       return;
     } else if (prvFile.endsWith(".pdf")) {
       // Open pdf
       ActivityPDFViewer.prfFilePath = prvFile;
