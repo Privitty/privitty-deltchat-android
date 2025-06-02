@@ -33,6 +33,12 @@
             android:dialogTitle="Enter minutes"
             android:inputType="number"/>
 
+        <org.thoughtcrime.securesms.components.SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="pref_notify_forward_request_enabled"
+            android:summary="@string/pref_notify_forward_request_explain"
+            android:title="@string/pref_notify_forward"/>
+
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_experimental_features">
 

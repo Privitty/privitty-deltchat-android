@@ -113,6 +113,14 @@ public class AdvancedPreferenceFragment extends ListSummaryPreferenceFragment
       });
     }
 
+    Preference notifyForwardRequestEnabled = this.findPreference("pref_notify_forward_request_enabled");
+    notifyForwardRequestEnabled.setOnPreferenceChangeListener((preference, newValue) -> {
+      boolean enabled = (Boolean) newValue;
+      privJni.setConfiguration(privJni.PRV_DB_CONFIG_NOTIFY_FORWARDING_ACCESS, newValue.toString());
+      Log.d("JAVA-Privitty", "User notification for forwarded files: " + newValue);
+      return true;
+    });
+
     bccSelfCheckbox = (CheckBoxPreference) this.findPreference("pref_bcc_self");
     bccSelfCheckbox.setOnPreferenceChangeListener((preference, newValue) -> {
       boolean enabled = (Boolean) newValue;

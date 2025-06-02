@@ -47,6 +47,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.os.ConfigurationCompat;
 import androidx.core.view.ViewCompat;
 
+import org.json.JSONObject;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.components.ComposeText;
 
@@ -377,6 +378,15 @@ public class Util {
 
   public synchronized static void localeChanged() {
     lastLocale = null;
+  }
+
+  public static boolean isValidJson(String jsonString) {
+    try {
+      new JSONObject(jsonString);
+      return true;
+    } catch (Exception e) {
+      return false;
+    }
   }
 
   public static int getLayoutDirection(Context context) {

@@ -17,6 +17,7 @@
 package org.thoughtcrime.securesms;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -95,7 +96,7 @@ public class ConversationItem extends BaseConversationItem
   private static final int MAX_MEASURE_CALLS = 3;
 
   private DcContact     dcContact;
-  private PrivJNI privJNI = null;
+  private PrivJNI privJni = null;
   // Whether the sender's avatar and name should be shown (usually the case in group threads):
   private boolean       showSender;
   private GlideRequests glideRequests;
@@ -127,15 +128,17 @@ public class ConversationItem extends BaseConversationItem
   private int incomingBubbleColor;
   private int outgoingBubbleColor;
 
+  private String user;
+
   public ConversationItem(Context context)
   {
     this(context, null);
-    privJNI = new PrivJNI(context);
+    privJni = new PrivJNI(context);
   }
 
   public ConversationItem(Context context, AttributeSet attrs) {
     super(context, attrs);
-    privJNI = new PrivJNI(context);
+    privJni = new PrivJNI(context);
   }
 
   @Override
@@ -763,18 +766,44 @@ public class ConversationItem extends BaseConversationItem
     activeFooter.setMessageRecord(current);
   }
 
-  private void setMessageNotification(@NonNull DcMsg current)
+  private void setMessageNotification(@NonNull DcMsg messageRecord)
   {
-    message_notification.setVisibility(GONE);
-    ///remaining code milind
+    PrivJNI.AccessResult r = null;
+    if ((messageRecord.getFromId() == DcContact.DC_CONTACT_ID_SELF) && (messageRecord.getType() == DcMsg.DC_MSG_FILE)) {
+      r = privJni.getForwardNotification(messageRecord.getChatId(), messageRecord.getFile(), (messageRecord.getFromId() == DcContact.DC_CONTACT_ID_SELF));
 
+      if (r.accessState == privJni.PRV_SPLITKEYS_STATE_TYPE_SPLITKEYS_WAITING_OWNER_ACTION) {
+        message_notification.setVisibility(VISIBLE);
+        user = r.username + "(" + r.email + ")";
+      } else {
+        message_notification.setVisibility(GONE);
+      }
+    }
 
     message_notification.setOnClickListener(new OnClickListener()
     {
       @Override
-      public void onClick(View v)
-      {
-            Toast.makeText(context,"Hieee",Toast.LENGTH_LONG).show();
+      public void onClick(View v) {
+        new AlertDialog.Builder(context)
+          .setTitle("Access Request")
+          .setMessage("Request from " + user + ". Are you sure you want to proceed?")
+          .setPositiveButton("Grant Access", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+              // Grant Access
+              privJni.setForwardGrant(messageRecord.getChatId(), messageRecord.getFile(), true);
+              message_notification.setVisibility(GONE);
+            }
+          })
+          .setNegativeButton("Deny", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+              // Deny Access
+              privJni.setForwardGrant(messageRecord.getChatId(), messageRecord.getFile(), false);
+              message_notification.setVisibility(GONE);
+              dialog.dismiss();
+            }
+          })
+          .setCancelable(false)
+          .show();
       }
     });
 

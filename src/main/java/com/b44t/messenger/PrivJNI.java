@@ -79,11 +79,13 @@ public class PrivJNI {
     public final static int PRV_SPLITKEYS_STATE_TYPE_SPLITKEYS_DELETED                = 5;
     public final static int PRV_SPLITKEYS_STATE_TYPE_RELAY_SPLITKEY_TO_OWNER          = 6;
     public final static int PRV_SPLITKEYS_STATE_TYPE_RELAY_SPLITKEY_TO_RECIPIENT      = 7;
+    public final static int PRV_SPLITKEYS_STATE_TYPE_SPLITKEYS_WAITING_OWNER_ACTION   = 8;
 
     /*
      * Static Privitty strings
      */
     public final static String PRV_DB_CONFIG_GENERAL_ACCESS_TIME                = "general_access_time";
+    public final static String PRV_DB_CONFIG_NOTIFY_FORWARDING_ACCESS           = "notify_forwarding_access";
 
     private Context context = null;
     public PrivJNI(Context context) {
@@ -110,6 +112,7 @@ public class PrivJNI {
     public native boolean isChatVersion(String mime_header);
     public native int getFileAccessState(int chat_id, String file_name, boolean direction);
     public native int getFileForwardAccessState(int chat_id, String file_path, boolean direction);
+    public native AccessResult getForwardNotification(int chat_id, String file_path, boolean direction);
     public native boolean canDownloadFile(int chat_id, String file_name, boolean direction);
     public native boolean canForwardFile(int chat_id, String file_name, boolean direction);     // Direction: Incoming or Outgoing message
     /*
@@ -120,7 +123,7 @@ public class PrivJNI {
     /*
      * Add peer request to whom this file is being forwarded.
      */
-    public native Result forwardPeerAdd(int source_chat_id, int recipient_chat_id, String recipient_name,
+    public native FileResult forwardPeerAdd(int source_chat_id, int recipient_chat_id, String recipient_name,
                                         String file_path, String file_name, boolean direction);
     public native String decryptForwardedFile(int chat_id, String filePath, String fileName, boolean outgoing);
     /*
@@ -129,17 +132,32 @@ public class PrivJNI {
     public native void setFileForwardAttributes(int chat_id, int recipient_id, String file_name,
                                                 boolean direction, boolean download_file, boolean forward_file,
                                                 int access_time);
+    public native void setForwardGrant(int chat_id, String file_path, boolean access);
     public native byte[] createChatGroup(int chatId, String ChatGroupName);
 
-    public static class Result {
+    public static class FileResult {
       public boolean success;
       public String filepath;
 
-      public Result(boolean success, String filepath) {
+      public FileResult(boolean success, String filepath) {
         this.success = success;
         this.filepath = filepath;
       }
-  }
+    }
+
+    public static class AccessResult {
+      public boolean success;
+      public String username;
+      public String email;
+      public int accessState;
+
+      public AccessResult(boolean success, String username, String email, int accessState) {
+        this.success = success;
+        this.username = username;
+        this.email = email;
+        this.accessState = accessState;
+      }
+    }
 }
 
 
