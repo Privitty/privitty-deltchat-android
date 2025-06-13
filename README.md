@@ -236,10 +236,10 @@ This project is tested with BrowserStack.
 
 # Translations
 
-Android metadata and changelogs are translated using [Weblate](https://hosted.weblate.org/projects/deltachat/android-metadata/).
+Android metadata and changelogs are translated using [Weblate](https://hosted.weblate.org/projects/privitty-deltchat-android/).
 
-<a href="https://hosted.weblate.org/engage/deltachat/">
-<img src="https://hosted.weblate.org/widget/deltachat/android-metadata/svg-badge.svg" alt="Translation status" />
+<a href="https://hosted.weblate.org/engage/privitty-deltchat-android/">
+<img src="https://hosted.weblate.org/widget/privitty-deltchat-android/svg-badge.svg" alt="Translation status" />
 </a>
 
 # Credits
