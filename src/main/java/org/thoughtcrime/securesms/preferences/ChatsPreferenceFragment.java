@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +25,7 @@ import org.thoughtcrime.securesms.BlockedContactsActivity;
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.connect.DcHelper;
 import org.thoughtcrime.securesms.permissions.Permissions;
+import org.thoughtcrime.securesms.util.CommonAsyncWithDialog;
 import org.thoughtcrime.securesms.util.ScreenLockUtil;
 import org.thoughtcrime.securesms.util.Util;
 
@@ -62,6 +64,9 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
 
     Preference backup = this.findPreference("pref_backup");
     backup.setOnPreferenceClickListener(new BackupListener());
+
+    Preference backup_priv = this.findPreference("pref_priv_backup");
+    backup_priv.setOnPreferenceClickListener(new BackupListenerPriv());
 
     autoDelDevice = findPreference("autodel_device");
     autoDelDevice.setOnPreferenceChangeListener(new AutodelChangeListener("delete_device_after"));
@@ -252,7 +257,16 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
       return true;
     }
   }
-
+  private class BackupListenerPriv implements Preference.OnPreferenceClickListener {
+    @Override
+    public boolean onPreferenceClick(Preference preference) {
+      boolean result = ScreenLockUtil.applyScreenLock(getActivity(), getString(R.string.pref_backup), getString(R.string.enter_system_secret_to_continue), REQUEST_CODE_CONFIRM_CREDENTIALS_BACKUP);
+      if (!result) {
+        performBackupPriv();
+      }
+      return true;
+    }
+  }
   private void performBackup() {
     Permissions.with(getActivity())
             .request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE) // READ_EXTERNAL_STORAGE required to read folder contents and to generate backup names
@@ -274,5 +288,56 @@ public class ChatsPreferenceFragment extends ListSummaryPreferenceFragment {
               builder.show();
             })
             .execute();
+  }
+  private void performBackupPriv() {
+    Permissions.with(getActivity())
+            .request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE) // READ_EXTERNAL_STORAGE required to read folder contents and to generate backup names
+            .alwaysGrantOnSdk30()
+            .ifNecessary()
+            .withPermanentDenialDialog(getString(R.string.perm_explain_access_to_storage_denied))
+            .onAllGranted(() -> {
+              final String addr = DcHelper.get(getActivity(), DcHelper.CONFIG_CONFIGURED_ADDRESS);
+              AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                      .setTitle("Privitty Backup")
+                      .setMessage("This will help to export backup related Privitty.")
+                      .setNeutralButton(android.R.string.cancel, null)
+                      .setPositiveButton(getActivity().getString(R.string.pref_backup_export_x, addr), (dialogInterface, i) -> startPrvBackUp());
+              builder.show();
+            })
+            .execute();
+  }
+
+  private void startPrvBackUp() {
+    new CommonAsyncWithDialog(getActivity(), "Performing Privitty Backup", "Preparing...") {
+
+      @Override
+      protected void doInBackground() {
+        String sPath = DcHelper.getImexDir().getAbsolutePath();  // download folder path
+
+        // backupcode wil be here using privJni object
+
+//        publishProgress("Connecting...");               // in case we need multiple async work , we can change message
+//        sleep(1000);                                     // testing sleep interval
+//        publishProgress("Exporting files...");
+//        sleep(1500);
+//        publishProgress("Finishing up...");
+//        sleep(1000);
+      }
+
+      @Override
+      protected void onPostExecute() {
+        showFinalDialog("Success", "Backup completed successfully!");
+      }
+
+      private void sleep(long ms) {
+        try {
+          Thread.sleep(ms);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+
+    }.execute();
+
   }
 }

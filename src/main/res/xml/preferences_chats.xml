@@ -49,6 +49,8 @@
     <PreferenceCategory android:title="@string/pref_backup">
         <Preference android:key="pref_backup"
             android:title="@string/export_backup_desktop"/>
+        <Preference android:key="pref_priv_backup"
+            android:title="Privitty Backup"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

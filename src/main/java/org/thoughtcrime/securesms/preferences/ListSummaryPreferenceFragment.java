@@ -13,6 +13,7 @@ import androidx.preference.Preference;
 
 import com.b44t.messenger.DcContext;
 import com.b44t.messenger.DcEvent;
+import com.b44t.messenger.PrivJNI;
 
 import org.thoughtcrime.securesms.R;
 import org.thoughtcrime.securesms.connect.DcEventCenter;
@@ -31,12 +32,14 @@ public abstract class ListSummaryPreferenceFragment extends CorrectedPreferenceF
   protected static final int REQUEST_CODE_CONFIRM_CREDENTIALS_KEYS = REQUEST_CODE_CONFIRM_CREDENTIALS_BACKUP + 1;
   protected static final int REQUEST_CODE_CONFIRM_CREDENTIALS_ACCOUNT = REQUEST_CODE_CONFIRM_CREDENTIALS_KEYS + 1;
   protected DcContext dcContext;
+  protected PrivJNI privJni = null;
   private NotificationController notificationController;
 
   @Override
   public void onCreate(Bundle icicle) {
     super.onCreate(icicle);
     dcContext = DcHelper.getContext(getContext());
+    privJni = new PrivJNI(getContext());
     DcHelper.getEventCenter(getContext()).addObserver(DcContext.DC_EVENT_IMEX_PROGRESS, this);
   }
 
