@@ -42,6 +42,7 @@ import org.thoughtcrime.securesms.qr.QrActivity;
 import org.thoughtcrime.securesms.recipients.Recipient;
 import org.thoughtcrime.securesms.util.FileUtils;
 import org.thoughtcrime.securesms.util.MediaUtil;
+import org.thoughtcrime.securesms.util.NetworkUtil;
 
 import java.io.File;
 import java.util.Date;
@@ -306,6 +307,11 @@ public class DcHelper {
         prvFile = privJni.decryptFile(msg.getChatId(), srcP.getParent(), srcP.getName(), true);
       }
     } else {
+      if(!NetworkUtil.isInternetAvailable(activity))
+      {
+        Toast.makeText(activity, "Please connect to the internet to view the file content.", Toast.LENGTH_LONG).show();
+        return;
+      }
       if (msg.isForwarded()) {
         prvFile = privJni.decryptForwardedFile(msg.getChatId(), srcP.getParent(), srcP.getName(), false);
       } else {
