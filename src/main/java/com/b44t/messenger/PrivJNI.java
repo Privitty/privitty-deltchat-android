@@ -134,6 +134,7 @@ public class PrivJNI {
                                                 int access_time);
     public native void setForwardGrant(int chat_id, String file_path, boolean access);
     public native byte[] createChatGroup(int chatId, String ChatGroupName);
+    public native void privittyBackup(String DirStore);
 
     public static class FileResult {
       public boolean success;

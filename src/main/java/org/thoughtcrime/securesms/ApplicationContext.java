@@ -177,7 +177,7 @@ public class ApplicationContext extends MultiDexApplication {
                 continue;
               }
             } catch (Exception e) {
-              Log.w("JAVA-Privitty", "Exception in Privitty message: " + e.getMessage());
+              Log.e("JAVA-Privitty", "Exception in Privitty message: " + e.getMessage());
             }
           } else {
             if (!privJni.isChatVersion(dcContext.getMimeHeaders(event.getData2Int()))) {
