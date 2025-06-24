@@ -337,7 +337,10 @@ public class DcHelper {
     } else if (prvFile.equals("SPLITKEYS_DENIED")) {
        Toast.makeText(activity, "Owner denied access!", Toast.LENGTH_LONG).show();
        return;
-    } else if (prvFile.endsWith(".pdf")) {
+    } else if (prvFile.equals("FORWARD_DISAPPEARING_MESSAGES")) {
+        Toast.makeText(activity, "Forwarded messages disappear once expired", Toast.LENGTH_LONG).show();
+        return;
+     } else if (prvFile.endsWith(".pdf")) {
       // Open pdf
       ActivityPDFViewer.prfFilePath = prvFile;
       if (msg.getFromId() != DcContact.DC_CONTACT_ID_SELF) {

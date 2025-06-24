@@ -406,7 +406,7 @@ public class ApplicationContext extends MultiDexApplication {
         int msgId = dcContext.sendMsg(chatId, msg);
       });
       new Handler(Looper.getMainLooper()).post(() -> {
-        Toast.makeText(getApplicationContext(), "You undo revoke", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "You revoked access", Toast.LENGTH_SHORT).show();
       });
     } else if (statusCode == PrivJNI.PRV_APP_STATUS_PEER_SPLITKEYS_UNDO_REVOKED) {
       Log.d("JAVA-Privitty", "Peer SPLITKEYS undo revoked");
@@ -418,7 +418,16 @@ public class ApplicationContext extends MultiDexApplication {
         int msgId = dcContext.sendMsg(chatId, msg);
       });
       new Handler(Looper.getMainLooper()).post(() -> {
-        Toast.makeText(getApplicationContext(), "You revoked access", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "You restored access", Toast.LENGTH_SHORT).show();
+      });
+    } else if (statusCode == PrivJNI.PRV_APP_STATUS_FORWARD_SPLITKEYS_REVOKED) {
+      Log.d("JAVA-Privitty", "Forwarded SPLITKEYS revoked: " + statusCode + " ChatId: " + chatId + " ForwardToChatId: " + forwardToChatId );
+      Util.runOnAnyBackgroundThread(() -> {
+        DcMsg msg = new DcMsg(dcContext, DcMsg.DC_MSG_TEXT);
+        msg.setSubject("{'privitty':'true', 'type':'FORWARD_SPLITKEYS_REVOKED'}");
+        String base64Msg = Base64.getEncoder().encodeToString(pdu);
+        msg.setText(base64Msg);
+        int msgId = dcContext.sendMsg(forwardToChatId, msg);
       });
     } else if (statusCode == PrivJNI.PRV_APP_STATUS_PEER_SPLITKEYS_DELETED) {
       Log.d("JAVA-Privitty", "Peer SPLITKEYS deleted");

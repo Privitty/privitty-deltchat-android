@@ -328,7 +328,8 @@ public class ConversationAdapter <V extends View & BindableConversationItem>
           dcMsg.setText("Granted access for next 15 mins.");
           dcMsg.setSubject("PRIVITTY_TOAST_MSG");
           return MESSAGE_TYPE_OUTGOING;
-        } else if ("SPLITKEYS_REVOKED".equalsIgnoreCase(jSubject.getString("type"))) {
+        } else if (("SPLITKEYS_REVOKED".equalsIgnoreCase(jSubject.getString("type"))) ||
+                   ("FORWARD_SPLITKEYS_REVOKED".equalsIgnoreCase(jSubject.getString("type")))) {
           dcMsg.setText("You revoked access");
           dcMsg.setSubject("PRIVITTY_TOAST_MSG");
           return MESSAGE_TYPE_OUTGOING;

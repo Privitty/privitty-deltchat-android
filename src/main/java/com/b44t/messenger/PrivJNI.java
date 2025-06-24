@@ -61,11 +61,12 @@ public class PrivJNI {
     public final static int PRV_APP_STATUS_RELAY_BACKWARD_SPLITKEYS_RESPONSE    = 31;
     public final static int PRV_APP_STATUS_PEER_SPLITKEYS_DELETED               = 32;
     public final static int PRV_APP_STATUS_PEER_SPLITKEYS_UNDO_REVOKED          = 33;
+    public final static int PRV_APP_STATUS_FORWARD_SPLITKEYS_REVOKED            = 34;
 
     /*
      * NOTE: Add any event above PRV_APP_STATUS_LIB_LAST and update PRV_APP_STATUS_LIB_LAST
      */ 
-    public final static int PRV_APP_STATUS_LIB_LAST                             = 34;
+    public final static int PRV_APP_STATUS_LIB_LAST                             = 35;
 
 
     /*
@@ -134,7 +135,8 @@ public class PrivJNI {
                                                 int access_time);
     public native void setForwardGrant(int chat_id, String file_path, boolean access);
     public native byte[] createChatGroup(int chatId, String ChatGroupName);
-    public native void privittyBackup(String DirStore);
+    public native boolean privittyExportBackup(String DirStore);
+    public native boolean privittyImportBackup(String DirStore);
 
     public static class FileResult {
       public boolean success;
