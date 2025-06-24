@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="link">Aseɣwen</string>
+    <string name="scan">Ḍumm</string>
+    <string name="yes">Ih</string>
+    <string name="no">Uhu</string>
+    <string name="select">Fren</string>
+    <string name="on">Yermed</string>
+    <string name="none">Ula yiwen</string>
+    <string name="automatic">Awurman</string>
+    <string name="open">Yeldi</string>
+    <string name="download">Zdem</string>
+    <string name="delete">Kkes</string>
+    <string name="update">Mucceḍ</string>
+    <string name="back">Uɣal</string>
+    <string name="close">Mdel</string>
+    <string name="create">Snulfu-d</string>
+    <string name="later">Ticki</string>
+    <string name="save">Sekles</string>
+    <string name="profile">Amaɣnu</string>
+    <string name="hide">Ffer</string>
+    <string name="custom">Udmawan</string>
+    <string name="ok">Ih</string>
+    <string name="cancel">Semmet</string>
+    <string name="once">Tikkelt</string>
+    <string name="def">Amezwer</string>
+</resources>
