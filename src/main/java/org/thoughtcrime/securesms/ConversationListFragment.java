@@ -311,7 +311,10 @@ public class ConversationListFragment extends BaseConversationListFragment
 
   @Override
   public void onItemLongClick(ConversationListItem item) {
+    /*
+    // commented to avoid multi-selection, causing issue in privitty forwarding hence it is disable for now.
     onItemLongClick(item.getChatId());
+    */
   }
 
   @Override

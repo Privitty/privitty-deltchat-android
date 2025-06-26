@@ -707,56 +707,63 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   }
 
   private void handleForwarding() {
-    DcChat dcChat = dcContext.getChat(chatId);
-    if (dcChat.isSelfTalk()) {
-      SendRelayedMessageUtil.immediatelyRelay(this, chatId);
-    } else {
-      String name = dcChat.getName();
-      if (!dcChat.isMultiUser()) {
-        int[] contactIds = dcContext.getChatContacts(chatId);
-        if (contactIds.length == 1 || contactIds.length == 2) {
-          name = dcContext.getContact(contactIds[0]).getNameNAddr();
+    if(srcChatId != chatId)
+    {
+      DcChat dcChat = dcContext.getChat(chatId);
+      if (dcChat.isSelfTalk()) {
+        SendRelayedMessageUtil.immediatelyRelay(this, chatId);
+      } else {
+        String name = dcChat.getName();
+        if (!dcChat.isMultiUser()) {
+          int[] contactIds = dcContext.getChatContacts(chatId);
+          if (contactIds.length == 1 || contactIds.length == 2) {
+            name = dcContext.getContact(contactIds[0]).getNameNAddr();
+          }
         }
-      }
 
-      // Privitty handshake
-      if (dcChat.isProtected()) {
-        if (!privJni.isPeerAdded(chatId)) {
-          PrivEvent jevent = new PrivEvent(PrivJNI.PRV_EVENT_ADD_NEW_PEER, "", "",
-            0, 0, chatId, "", "", "", 0, new byte[0]);
-          privJni.produceEvent(jevent);
-          Log.d("JAVA-Privitty", "Adding a new peer");
+        // Privitty handshake
+        if (dcChat.isProtected()) {
+          if (!privJni.isPeerAdded(chatId)) {
+            PrivEvent jevent = new PrivEvent(PrivJNI.PRV_EVENT_ADD_NEW_PEER, "", "",
+              0, 0, chatId, "", "", "", 0, new byte[0]);
+            privJni.produceEvent(jevent);
+            Log.d("JAVA-Privitty", "Adding a new peer");
+          }
         }
-      }
 
-      new AlertDialog.Builder(this)
-              .setMessage(getString(R.string.ask_forward, name))
-              .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
-                SendRelayedMessageUtil.immediatelyRelay(this, chatId);
+        new AlertDialog.Builder(this)
+          .setMessage(getString(R.string.ask_forward, name))
+          .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+            SendRelayedMessageUtil.immediatelyRelay(this, chatId);
 
-                for (DcMsg messageRecord : forwardMessages) {
-                  if (messageRecord.hasFile()) {
-                    // Privitty forward file
-                    destChatId = chatId;
-                    String path = messageRecord.getFile();
-                    String mime = messageRecord.getFilemime();
-                    File srcPath = new File(path);
-                    PrivJNI.FileResult r = privJni.forwardPeerAdd((int)srcChatId, (int)destChatId, dcChat.getName(), srcPath.getParent(), srcPath.getName(), true);
+            for (DcMsg messageRecord : forwardMessages) {
+              if (messageRecord.hasFile()) {
+                // Privitty forward file
+                destChatId = chatId;
+                String path = messageRecord.getFile();
+                String mime = messageRecord.getFilemime();
+                File srcPath = new File(path);
+                PrivJNI.FileResult r = privJni.forwardPeerAdd((int)srcChatId, (int)destChatId, dcChat.getName(), srcPath.getParent(), srcPath.getName(), true);
 
-                    if (r.success) {
-                      Log.i("JAVA-Privitty", "Successfully forwarded file");
-                      messageRecord.setFile(r.filepath, mime);
-                    } else {
-                      Log.e("JAVA-Privitty", "Failed to forward file");
-                    }
-                  }
+                if (r.success) {
+                  Log.i("JAVA-Privitty", "Successfully forwarded file");
+                  messageRecord.setFile(r.filepath, mime);
+                } else {
+                  Log.e("JAVA-Privitty", "Failed to forward file");
                 }
+              }
+            }
 
-                successfulForwardingAttempt = true;
-              })
-              .setNegativeButton(R.string.cancel, (dialogInterface, i) -> finish())
-              .setOnCancelListener(dialog -> finish())
-              .show();
+            successfulForwardingAttempt = true;
+          })
+          .setNegativeButton(R.string.cancel, (dialogInterface, i) -> finish())
+          .setOnCancelListener(dialog -> finish())
+          .show();
+      }
+    }
+    else
+    {
+      Toast.makeText(context,"You can’t forward this message back to the original sender.",Toast.LENGTH_LONG).show();
     }
   }
 
